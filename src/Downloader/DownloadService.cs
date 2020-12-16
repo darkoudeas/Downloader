@@ -255,6 +255,7 @@ namespace Downloader
 
                 using var destinationStream = new ThrottledStream(responseStream, Package.Options.MaximumSpeedPerChunk);
 
+
                 if (Package.Options.OnTheFlyDownload)
                     await ReadStreamOnTheFly(destinationStream, chunk, token);
                 else

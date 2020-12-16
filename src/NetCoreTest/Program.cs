@@ -2,6 +2,7 @@
 using Konsole;
 using System;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.IO;
 using System.Net;
 using System.Threading.Tasks;
@@ -17,14 +18,14 @@ namespace NetCoreTest
 
             var downloadOpt = new DownloadConfiguration
             {
-                AllowedHeadRequest = false, // Can fetch file size by HEAD request or must be used GET method to support host
+                AllowedHeadRequest = true, // Can fetch file size by HEAD request or must be used GET method to support host
                 ParallelDownload = false, // download parts of file as parallel or not
-                BufferBlockSize = 8000, // usually, hosts support max to 8000 bytes
-                ChunkCount = 5, // 0 for AutoChunk
+                BufferBlockSize = 10000, // usually, hosts support max to 8000 bytes
+                ChunkCount = 1, // 0 for AutoChunk
                 MaxTryAgainOnFailover = 5, // the maximum number of times to fail.
                 OnTheFlyDownload = false, // caching in-memory or not?
                 Timeout = 10000, // timeout (millisecond) per stream block reader
-                MaximumBytesPerSecond =0,//1024 * 1024, // speed limited to 1MB/s
+                MaximumBytesPerSecond =0, // speed limited to 1MB/s
                 TempDirectory = "C:\\temp", // Set the temp path for buffering chunk files, the default path is Path.GetTempPath().
                 ClearPackageAfterDownloadCompleted = true,
                 RequestConfiguration = // config and customize request headers
@@ -47,7 +48,12 @@ namespace NetCoreTest
 
             try
             {
+                Stopwatch stopwatch = new Stopwatch();                
+                stopwatch.Start();
                 await ds.DownloadFileAsync("http://mirrors.standaloneinstaller.com/video-sample/metaxas-keller-Bell.mpeg", new DirectoryInfo("c:\\temp")).ConfigureAwait(false);
+                stopwatch.Stop();                
+                Console.WriteLine("Time elapsed: {0} seconds", stopwatch.Elapsed.TotalSeconds);
+                
             }
             catch (WebException ex) when ((ex.Response as HttpWebResponse)?.StatusCode == HttpStatusCode.NotFound)
             {                                
