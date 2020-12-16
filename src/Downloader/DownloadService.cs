@@ -39,6 +39,10 @@ namespace Downloader
         public event EventHandler<DownloadProgressChangedEventArgs> DownloadProgressChanged;
         public event EventHandler<DownloadProgressChangedEventArgs> ChunkDownloadProgressChanged;
 
+        private static double ConvertBytesToMegabytes(long bytes)
+        {
+            return (bytes / 1024f) / 1024f;
+        }
 
         public async Task DownloadFileAsync(DownloadPackage package)
         {
@@ -147,9 +151,25 @@ namespace Downloader
         }
         protected void ChunkFile()
         {
-            var minNeededParts = (int)Math.Ceiling((double)Package.TotalFileSize / int.MaxValue); // for files as larger than 2GB
-            var parallelChunkCount = Package.Options.ChunkCount < minNeededParts ? minNeededParts : Package.Options.ChunkCount;
-            Package.Chunks = ChunkFile(Package.TotalFileSize, parallelChunkCount);
+            if (Package.Options.ChunkCount == 0)
+            {
+                //AutoChunk
+                double filesize = ConvertBytesToMegabytes(Package.TotalFileSize);
+                var chunkSize = filesize switch
+                {
+                    var n when n <= 5 => 262144 ,
+                    var n when (n > 5 && n<=25 ) => 524288,
+                    var n when (n > 25 && n <= 100) => 1024000,
+                    var n when (n > 100 ) => 2048000,
+                    _ => 524288 // default value
+                };
+                Package.Options.ChunkCount = (int)Math.Ceiling((double)Package.TotalFileSize / chunkSize);
+            }
+            
+                var minNeededParts = (int)Math.Ceiling((double)Package.TotalFileSize / int.MaxValue); // for files as larger than 2GB
+                var parallelChunkCount = Package.Options.ChunkCount < minNeededParts ? minNeededParts : Package.Options.ChunkCount;
+                Package.Chunks = ChunkFile(Package.TotalFileSize, parallelChunkCount);
+            
         }
         protected async Task StartDownload()
         {

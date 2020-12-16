@@ -19,6 +19,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution items", "Solution 
 		..\sample.png = ..\sample.png
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NetCoreTest", "NetCoreTest\NetCoreTest.csproj", "{5963A9B6-39CD-41D9-A677-D7D0F2320F03}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -37,6 +39,10 @@ Global
 		{14AA3A11-10A4-4866-80A3-015229FFECC6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{14AA3A11-10A4-4866-80A3-015229FFECC6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{14AA3A11-10A4-4866-80A3-015229FFECC6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5963A9B6-39CD-41D9-A677-D7D0F2320F03}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5963A9B6-39CD-41D9-A677-D7D0F2320F03}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5963A9B6-39CD-41D9-A677-D7D0F2320F03}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5963A9B6-39CD-41D9-A677-D7D0F2320F03}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

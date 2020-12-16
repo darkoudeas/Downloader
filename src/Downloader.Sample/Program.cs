@@ -32,13 +32,13 @@ namespace Downloader.Sample
             var downloadOpt = new DownloadConfiguration
             {
                 AllowedHeadRequest = false, // Can fetch file size by HEAD request or must be used GET method to support host
-                ParallelDownload = true, // download parts of file as parallel or not
+                ParallelDownload = false, // download parts of file as parallel or not
                 BufferBlockSize = 10240, // usually, hosts support max to 8000 bytes
                 ChunkCount = 8, // file parts to download
                 MaxTryAgainOnFailover = int.MaxValue, // the maximum number of times to fail.
                 OnTheFlyDownload = false, // caching in-memory or not?
                 Timeout = 1000, // timeout (millisecond) per stream block reader
-                MaximumBytesPerSecond = 1024 * 1024, // speed limited to 1MB/s
+                MaximumBytesPerSecond = 0,//1024 * 1024, // speed limited to 1MB/s
                 TempDirectory = "C:\\temp", // Set the temp path for buffering chunk files, the default path is Path.GetTempPath().
                 RequestConfiguration = // config and customize request headers
                 {
@@ -108,7 +108,7 @@ namespace Downloader.Sample
                 new DownloadItem
                 {
                     FolderPath = Path.GetTempPath(),
-                    Url = "http://ipv4.download.thinkbroadband.com/100MB.zip"
+                    Url = "https://www.quintic.com/software/sample_videos/Equine%20Walk%20300fps.avi"
                 }
             };
 
