@@ -21,7 +21,7 @@ namespace NetCoreTest
                 AllowedHeadRequest = true, // Can fetch file size by HEAD request or must be used GET method to support host
                 ParallelDownload = false, // download parts of file as parallel or not
                 BufferBlockSize = 10000, // usually, hosts support max to 8000 bytes
-                ChunkCount = 1, // 0 for AutoChunk
+                ChunkCount = 0, // 0 for AutoChunk
                 MaxTryAgainOnFailover = 5, // the maximum number of times to fail.
                 OnTheFlyDownload = false, // caching in-memory or not?
                 Timeout = 10000, // timeout (millisecond) per stream block reader
