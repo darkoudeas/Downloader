@@ -13,6 +13,7 @@ namespace NetCoreTest
     {
         static ProgressBar pb = new ProgressBar(100);
         static ProgressBar pbchuck = new ProgressBar(100);
+        static DownloadPackage pack;
         static async Task Main(string[] args)
         {
 
@@ -20,18 +21,18 @@ namespace NetCoreTest
             {
                 AllowedHeadRequest = true, // Can fetch file size by HEAD request or must be used GET method to support host
                 ParallelDownload = false, // download parts of file as parallel or not
-                BufferBlockSize = 10000, // usually, hosts support max to 8000 bytes
-                ChunkCount = 0, // 0 for AutoChunk
-                MaxTryAgainOnFailover = 5, // the maximum number of times to fail.
+                BufferBlockSize = 8192, // usually, hosts support max to 8000 bytes
+                ChunkCount = 1, // 0 for AutoChunk
+                MaxTryAgainOnFailover = 20, // the maximum number of times to fail.
                 OnTheFlyDownload = false, // caching in-memory or not?
-                Timeout = 10000, // timeout (millisecond) per stream block reader
+                Timeout = 30000, // timeout (millisecond) per stream block reader
                 MaximumBytesPerSecond =0, // speed limited to 1MB/s
                 TempDirectory = "C:\\temp", // Set the temp path for buffering chunk files, the default path is Path.GetTempPath().
                 ClearPackageAfterDownloadCompleted = true,
                 RequestConfiguration = // config and customize request headers
                 {
                     Accept = "*/*",
-                    UserAgent = $"Downloader",
+                    UserAgent = $"Evonews",
                     ProtocolVersion = HttpVersion.Version11,
                     KeepAlive = true,
                     UseDefaultCredentials = false
@@ -45,12 +46,13 @@ namespace NetCoreTest
             ds.ChunkDownloadProgressChanged += OnChunkDownloadProgressChanged;
             ds.DownloadProgressChanged += OnDownloadProgressChanged;
             ds.DownloadFileCompleted += OnDownloadFileCompleted;
-
+            pack = ds.Package;
             try
             {
                 Stopwatch stopwatch = new Stopwatch();                
                 stopwatch.Start();
-                await ds.DownloadFileAsync("http://mirrors.standaloneinstaller.com/video-sample/metaxas-keller-Bell.mpeg", new DirectoryInfo("c:\\temp")).ConfigureAwait(false);
+                
+                await ds.DownloadFileAsync("http://liveupdate.mpnt.network/big_buck_bunny_720p_30mb.mp4", new DirectoryInfo("c:\\temp")).ConfigureAwait(false);
                 stopwatch.Stop();                
                 Console.WriteLine("Time elapsed: {0} seconds", stopwatch.Elapsed.TotalSeconds);
                 
